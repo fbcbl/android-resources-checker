@@ -1,20 +1,25 @@
 import glob
 import logging
+import os
 import re
 from dataclasses import dataclass
+from enum import Enum
 
 
-@dataclass
-class Resources:
-    drawables: set[str]
+class ResourceType(Enum):
+    drawable = "drawable"
 
-    def difference(self, other):
-        if isinstance(other, Resources):
-            return Resources(
-                drawables=self.drawables.difference(other.drawables)
-            )
-        else:
-            return self
+
+@dataclass(frozen=True)
+class ResourceReference:
+    name: str
+    type: ResourceType
+
+
+@dataclass(frozen=True)
+class PackagedResource:
+    resource: ResourceReference
+    size: int
 
 
 class ResourcesFetcher:
@@ -22,30 +27,33 @@ class ResourcesFetcher:
     def __init__(self, project_path):
         self.project_path = project_path
 
-    def fetch_packaged_resources(self) -> Resources:
+    def fetch_packaged_resources(self) -> set[PackagedResource]:
         logging.info("fetching resources for " + self.project_path)
-        drawables = set()
+        resources = set()
+
         for filepath in glob.glob(self.project_path + "/**/res/**", recursive=True):
             if re.match(".*/res/drawable/.*", filepath):
+                logging.debug("-- found drawable: " + filepath)
+
                 filename = filepath.split("/")[-1]  # extracting the 'filename.xml' or 'filename.png'
                 drawable_name = "R.drawable." + filename.split(".")[0]
-                logging.debug("-- found drawable: " + drawable_name)
-                drawables.add(drawable_name)
+                drawable_size = os.stat(filepath).st_size
 
-        logging.info("Packaged drawables count [" + self.project_path + "] => " + str(len(drawables)))
+                resources.add(PackagedResource(ResourceReference(drawable_name, ResourceType.drawable), drawable_size))
 
-        return Resources(
-            drawables=drawables
-        )
+        logging.info("Packaged resources count [" + self.project_path + "] => " + str(len(resources)))
 
-    def fetch_used_resources(self) -> Resources:
-        drawables = set()
+        return resources
+
+    def fetch_used_resources(self) -> set[ResourceReference]:
+        resources = set()
 
         for filepath in glob.glob(self.project_path + "/**/*.xml", recursive=True):
             with open(filepath) as f:
                 for line in f.readlines():
                     for result in re.finditer("@drawable/" + DRAWABLE_NAME_REGEX, line):
-                        drawables.add("R.drawable." + result.group().split("/")[-1])
+                        resource_reference = ResourceReference("R.drawable." + result.group().split("/")[-1], ResourceType.drawable)
+                        resources.add(resource_reference)
 
         java_files = glob.glob(self.project_path + "/**/*.java", recursive=True)
         kotlin_files = glob.glob(self.project_path + "/**/*.kt", recursive=True)
@@ -54,13 +62,12 @@ class ResourcesFetcher:
             with open(filepath) as f:
                 for line in f.readlines():
                     for result in re.finditer("R.drawable." + DRAWABLE_NAME_REGEX, line):
-                        drawables.add(result.group())
+                        resource_reference = ResourceReference(result.group(), ResourceType.drawable)
+                        resources.add(resource_reference)
 
-        logging.info("Used drawables count [" + self.project_path + "] => " + str(len(drawables)))
+        logging.info("Used resources count [" + self.project_path + "] => " + str(len(resources)))
 
-        return Resources(
-            drawables=drawables
-        )
+        return resources
 
 
 DRAWABLE_NAME_REGEX = "[A-Za-z1-9_]+"
