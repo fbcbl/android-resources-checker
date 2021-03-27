@@ -2,8 +2,11 @@ import logging
 import sys
 
 import click
+from rich.console import Console
 
+from analyzer import ResourcesAnalyzer
 from app import Application
+from reporting import MetricsReporter
 from resources import ResourcesFetcher
 
 LIB_PROJECT_HELP = "The path to the library android project that provides the resources."
@@ -18,10 +21,11 @@ logging.basicConfig(level=logging.INFO)
 def launch(lib_app, client_app):
     try:
         app = Application(
-            client_resources_fetcher=ResourcesFetcher(client_app),
-            lib_resources_fetcher=ResourcesFetcher(lib_app)
+            resources_fetcher=ResourcesFetcher(),
+            analyzer=ResourcesAnalyzer(),
+            reporter=MetricsReporter(console=Console())
         )
-        app.execute()
+        app.execute(client_app, lib_app)
         sys.exit(0)
     except Exception as error:
         logging.exception("Could not complete analysis.")
