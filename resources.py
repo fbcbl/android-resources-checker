@@ -7,7 +7,10 @@ from enum import Enum
 
 
 class ResourceType(Enum):
-    drawable = "drawable"
+    drawable = "drawable",
+    color = "color",
+    anim = "anim",
+    raw = "raw"
 
 
 @dataclass(frozen=True)
@@ -32,14 +35,18 @@ class ResourcesFetcher:
         resources = set()
 
         for filepath in glob.glob(self.project_path + "/**/res/**", recursive=True):
-            if re.match(".*/res/drawable/.*", filepath):
-                logging.debug("-- found drawable: " + filepath)
+            match = re.match(".*/res/(" + RESOURCES_OPTIONS + ").*/", filepath)
+            if match is not None:
+                logging.debug("-- found resource: " + filepath)
 
                 filename = filepath.split("/")[-1]  # extracting the 'filename.xml' or 'filename.png'
-                drawable_name = "R.drawable." + filename.split(".")[0]
-                drawable_size = os.stat(filepath).st_size
+                resource_name = filename.split(".")[0]
+                print(resource_name)
+                resource_type = match.groups()[0]
+                resource_size = os.stat(filepath).st_size
+                resource_ref = ResourceReference(resource_name, ResourceType[resource_type])
 
-                resources.add(PackagedResource(ResourceReference(drawable_name, ResourceType.drawable), drawable_size))
+                resources.add(PackagedResource(resource_ref, resource_size))
 
         logging.info("Packaged resources count [" + self.project_path + "] => " + str(len(resources)))
 
@@ -51,8 +58,9 @@ class ResourcesFetcher:
         for filepath in glob.glob(self.project_path + "/**/*.xml", recursive=True):
             with open(filepath) as f:
                 for line in f.readlines():
-                    for result in re.finditer("@drawable/" + DRAWABLE_NAME_REGEX, line):
-                        resource_reference = ResourceReference("R.drawable." + result.group().split("/")[-1], ResourceType.drawable)
+                    for result in re.finditer("@(" + RESOURCES_OPTIONS + ")/" + RESOURCE_NAME_REGEX, line):
+                        resource_reference = ResourceReference(result.group().split("/")[-1],
+                                                               ResourceType[result.groups()[0]])
                         resources.add(resource_reference)
 
         java_files = glob.glob(self.project_path + "/**/*.java", recursive=True)
@@ -61,7 +69,7 @@ class ResourcesFetcher:
         for filepath in (java_files + kotlin_files):
             with open(filepath) as f:
                 for line in f.readlines():
-                    for result in re.finditer("R.drawable." + DRAWABLE_NAME_REGEX, line):
+                    for result in re.finditer("R.drawable." + RESOURCE_NAME_REGEX, line):
                         resource_reference = ResourceReference(result.group(), ResourceType.drawable)
                         resources.add(resource_reference)
 
@@ -70,4 +78,5 @@ class ResourcesFetcher:
         return resources
 
 
-DRAWABLE_NAME_REGEX = "[A-Za-z1-9_]+"
+RESOURCE_NAME_REGEX = "[A-Za-z1-9_]+"
+RESOURCES_OPTIONS = "drawable|color|anim|raw"

@@ -30,6 +30,8 @@ class Application(object):
         lib_unused_res = [r for r in lib_public_resources if r not in client_used_res_refs]
         print(len(lib_unused_res))
         lib_unused_packaged_res = [pr for pr in lib_packaged_resources if pr.resource in lib_unused_res]
+        for pr in lib_unused_packaged_res:
+            print(pr)
         print(len(lib_unused_packaged_res))
         total_size = sum([pr.size for pr in lib_unused_packaged_res])
         print(_format_bytes(total_size))
