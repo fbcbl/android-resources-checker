@@ -11,7 +11,11 @@ def _format_bytes(size):
     while size > power:
         size /= power
         n += 1
-    return str(size) + " " + str(power_labels[n]) + "bytes"
+    return f"{size:.2f} {str(power_labels[n])}bytes"
+
+
+def _format_to_kb(size):
+    return f"{size / 2 ** 10:.2f} kb"
 
 
 class Reporter:
@@ -83,11 +87,14 @@ class StdoutReporter(ContextReporter):
         table.pad_edge = False
         table.add_column("Resource Path")
         table.add_column("Resource Type")
+        table.add_column("Resource Size")
 
         for grouped_resources in breakdown.unused_resources.values():
             sorted_resources = sorted(grouped_resources, key=lambda r: r.filepath)
             for package_resource in sorted_resources:
-                rows = [package_resource.filepath, package_resource.resource.type.name]
+                rows = [package_resource.filepath,
+                        package_resource.resource.type.name,
+                        _format_to_kb(package_resource.size)]
                 table.add_row(*rows)
 
         printer.print(table)
