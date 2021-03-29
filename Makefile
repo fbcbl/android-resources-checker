@@ -15,7 +15,8 @@ standard-inspection:
 	poetry run android-resources-checker \
 		--app-path=$(app-path)
 
-deploy: ## Deploy the current build to Pypi
+## Deploy the current build to Pypi
+deploy:
 	poetry config pypi-token.pypi $(token)
 	poetry build
 	poetry publish

@@ -19,14 +19,25 @@ Main features:
 
 ## Using
 
-This program requires Python, supporting from 3.8.X and 3.9.x
+This program requires Python, supporting from 3.8.x and 3.9.x
 
 ## Inspecting your app resources.
 
 Imagining your app in the project `subject-app`, you can trigger the resources inspection by running:
 
 ```shell
-make standard-inspection --app-path=/path/to/subject-app
+android-resources-checker --app-path=/path/to/subject-app
+```
+
+## Inspecting your library app resources.
+
+In the case you have two projects in separate repos, where a `client-app` depends on a `lib-app`, you can check the unused
+resources of the library app by running:
+
+```shell
+android-resources-checker \
+  --app-path=/path/to/lib-app \
+  --client-path=/path/to/client-app
 ```
 
 ## License
