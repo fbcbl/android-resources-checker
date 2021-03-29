@@ -7,7 +7,7 @@ def _format_bytes(size):
     # 2**10 = 1024
     power = 2 ** 10
     n = 0
-    power_labels = {0: '', 1: 'kilo', 2: 'mega', 3: 'giga', 4: 'tera'}
+    power_labels = {0: "", 1: "kilo", 2: "mega", 3: "giga", 4: "tera"}
     while size > power:
         size /= power
         n += 1
@@ -19,7 +19,6 @@ def _format_to_kb(size):
 
 
 class Reporter:
-
     def __init__(self, console):
         self.console = console
         self.output_delegate = StdoutReporter(console)
@@ -41,7 +40,6 @@ class Reporter:
 
 
 class ContextReporter:
-
     def __init__(self, console):
         self.console = console
 
@@ -56,13 +54,14 @@ class ContextReporter:
 
 
 class StdoutReporter(ContextReporter):
-
     def report(self, breakdown: AnalysisBreakdown):
         printer = self.console
         printer.print("\nAnalysis done with success!")
 
         printer.print(f"\nProject: [bold green]{breakdown.project_name}[/bold green]")
-        printer.print(f"\nPotential size savings → {_format_bytes(breakdown.unused_size_bytes)}")
+        printer.print(
+            f"\nPotential size savings → {_format_bytes(breakdown.unused_size_bytes)}"
+        )
         table = Table(show_header=True, header_style="bold magenta")
         table.pad_edge = False
         table.add_column("Resource Type")
@@ -73,7 +72,7 @@ class StdoutReporter(ContextReporter):
             rows = [
                 resource_type.name,
                 str(len(breakdown.used_resources[resource_type])),
-                str(len(breakdown.unused_resources[resource_type]))
+                str(len(breakdown.unused_resources[resource_type])),
             ]
             table.add_row(*rows)
 
@@ -92,9 +91,11 @@ class StdoutReporter(ContextReporter):
         for grouped_resources in breakdown.unused_resources.values():
             sorted_resources = sorted(grouped_resources, key=lambda r: r.filepath)
             for package_resource in sorted_resources:
-                rows = [package_resource.filepath,
-                        package_resource.resource.type.name,
-                        _format_to_kb(package_resource.size)]
+                rows = [
+                    package_resource.filepath,
+                    package_resource.resource.type.name,
+                    _format_to_kb(package_resource.size),
+                ]
                 table.add_row(*rows)
 
         printer.print(table)

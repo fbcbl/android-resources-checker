@@ -9,9 +9,13 @@ from app import Application
 from reporting import Reporter
 from resources import ResourcesFetcher, ResourcesModifier
 
-LIB_PROJECT_HELP = "The path to the android project whose resources you want to inspect."
-CLIENT_PROJECT_HELP = "The path to the client android project that consumes the reference" \
-                      " project resources"
+LIB_PROJECT_HELP = (
+    "The path to the android project whose resources you want to inspect."
+)
+CLIENT_PROJECT_HELP = (
+    "The path to the client android project that consumes the reference"
+    " project resources"
+)
 
 logging.basicConfig(level=logging.INFO)
 
@@ -25,11 +29,9 @@ def launch(app_path, client_path):
             resources_fetcher=ResourcesFetcher(),
             resources_modifier=ResourcesModifier(),
             analyzer=ResourcesAnalyzer(),
-            reporter=Reporter(console=Console())
+            reporter=Reporter(console=Console()),
         )
-        app.execute(
-            app_path=app_path,
-            client_app_path=client_path)
+        app.execute(app_path=app_path, client_app_path=client_path)
         sys.exit(0)
     except Exception:
         logging.exception("Could not complete analysis.")
