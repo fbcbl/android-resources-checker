@@ -9,14 +9,11 @@ from models import ResourceReference, ResourceType, PackagedResource
 class ResourcesFetcher:
 
     def fetch_packaged_resources(self, project_path) -> set[PackagedResource]:
-        logging.info("fetching resources for " + project_path)
         resources = set()
 
         for filepath in glob.glob(project_path + "/**/res/**", recursive=True):
             match = re.match(".*/res/(" + RESOURCES_OPTIONS + ").*/", filepath)
             if match is not None:
-                logging.debug("-- found resource: " + filepath)
-
                 filename = filepath.split("/")[-1]  # extracting the 'filename.xml' or 'filename.png'
                 resource_name = filename.split(".")[0]
                 resource_type = match.groups()[0]
@@ -24,8 +21,6 @@ class ResourcesFetcher:
                 resource_ref = ResourceReference(resource_name, ResourceType[resource_type])
 
                 resources.add(PackagedResource(resource_ref, filepath, resource_size))
-
-        logging.info("Packaged resources count [" + project_path + "] => " + str(len(resources)))
 
         return resources
 
@@ -49,8 +44,6 @@ class ResourcesFetcher:
                     for result in re.finditer("R.drawable." + RESOURCE_NAME_REGEX, line):
                         resource_reference = ResourceReference(result.group(), ResourceType.drawable)
                         resources.add(resource_reference)
-
-        logging.info("Used resources count [" + project_path + "] => " + str(len(resources)))
 
         return resources
 

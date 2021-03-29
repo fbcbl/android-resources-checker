@@ -14,7 +14,7 @@ def _format_bytes(size):
     return str(size) + " " + str(power_labels[n]) + "bytes"
 
 
-class MetricsReporter:
+class Reporter:
 
     def __init__(self, console):
         self.console = console
@@ -25,6 +25,9 @@ class MetricsReporter:
 
     def deletion_completed(self, num_resources):
         self.console.print(f"{num_resources} resources deleted! :rocket:")
+
+    def resources_processing_started(self):
+        self.console.print("\n[bold]Resources processing started![/bold]")
 
     def report(self, breakdown):
         self.output_delegate.report(breakdown)

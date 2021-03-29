@@ -6,7 +6,7 @@ from rich.console import Console
 
 from analyzer import ResourcesAnalyzer
 from app import Application
-from reporting import MetricsReporter
+from reporting import Reporter
 from resources import ResourcesFetcher, ResourcesModifier
 
 LIB_PROJECT_HELP = "The path to the library android project that provides the resources."
@@ -24,7 +24,7 @@ def launch(lib_app, client_app):
             resources_fetcher=ResourcesFetcher(),
             resources_modifier=ResourcesModifier(),
             analyzer=ResourcesAnalyzer(),
-            reporter=MetricsReporter(console=Console())
+            reporter=Reporter(console=Console())
         )
         app.execute(client_app, lib_app)
         sys.exit(0)

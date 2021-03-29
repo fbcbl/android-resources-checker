@@ -1,3 +1,4 @@
+from rich.console import Console
 from rich.prompt import Confirm
 
 
@@ -12,10 +13,21 @@ class Application(object):
     def execute(self, client_app_path, lib_app_path):
         self.reporter.apps(client_app_path, lib_app_path)
 
+        lib_app_name = lib_app_path.split("/")[-1]
+        client_app_name = client_app_path.split("/")[-1]
+
         # fetch resources data
-        lib_packaged_res = self.resources_fetcher.fetch_packaged_resources(lib_app_path)
-        client_used_refs = self.resources_fetcher.fetch_used_resources(client_app_path)
-        lib_used_refs = self.resources_fetcher.fetch_used_resources(lib_app_path)
+        console = Console()
+        self.reporter.resources_processing_started()
+        with console.status("[bold green]Processing project resources...") as status:
+            lib_packaged_res = self.resources_fetcher.fetch_packaged_resources(lib_app_path)
+            console.log(f"{lib_app_name} - packaged resources processed!")
+
+            lib_used_refs = self.resources_fetcher.fetch_used_resources(lib_app_path)
+            console.log(f"{lib_app_name} - used resources processed!")
+
+            client_used_refs = self.resources_fetcher.fetch_used_resources(client_app_path)
+            console.log(f"{client_app_name} - used resources processed!")
 
         # analyze data
         analysis = self.analyzer.analyze(
