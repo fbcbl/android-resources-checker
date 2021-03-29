@@ -32,6 +32,9 @@ class Reporter:
     def report(self, breakdown):
         self.output_delegate.report(breakdown)
 
+    def report_unused_resources_list(self, breakdown):
+        self.output_delegate.report_unused_resources_list(breakdown)
+
 
 class ContextReporter:
 
@@ -68,5 +71,21 @@ class StdoutReporter(ContextReporter):
                 str(len(breakdown.unused_resources[resource_type]))
             ]
             table.add_row(*rows)
+
+        printer.print(table)
+
+    def report_unused_resources_list(self, breakdown):
+        printer = self.console
+
+        printer.print(f"\n[bold green]Unused Resources List[/bold green]")
+        table = Table(show_header=True, header_style="bold magenta")
+        table.pad_edge = False
+        table.add_column("Resource Path")
+        table.add_column("Resource Type")
+
+        for grouped_resources in breakdown.unused_resources.values():
+            for package_resource in grouped_resources:
+                rows = [package_resource.filepath, package_resource.resource.type.name]
+                table.add_row(*rows)
 
         printer.print(table)

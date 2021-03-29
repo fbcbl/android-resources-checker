@@ -39,6 +39,10 @@ class Application(object):
         # report
         self.reporter.report(analysis)
 
+        # optional resource list visualization
+        if Confirm.ask("Do you want to see the list of unused resources?"):
+            self.reporter.report_unused_resources_list(analysis)
+
         # optional resource deletion
         delete_unused_resources = Confirm.ask("Delete unused resources?")
         if delete_unused_resources:
