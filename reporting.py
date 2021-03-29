@@ -46,9 +46,9 @@ class ContextReporter:
         self.console = console
 
     def apps(self, client_app_path, lib_app_path):
-        self.__print("\nReference app", lib_app_path, "cyan")
+        self.__print("Reference app", lib_app_path, "cyan")
         if client_app_path is not None:
-            self.__print("\nClient app", client_app_path, "cyan")
+            self.__print("Client app", client_app_path, "cyan")
 
     def __print(self, prefix, content, color):
         printer = self.console
