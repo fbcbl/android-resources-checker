@@ -4,10 +4,10 @@ import sys
 import click
 from rich.console import Console
 
-from analyzer import ResourcesAnalyzer
-from app import Application
-from reporting import Reporter
-from resources import ResourcesFetcher, ResourcesModifier
+from .analyzer import ResourcesAnalyzer
+from .app import Application
+from .reporting import Reporter
+from .resources import ResourcesFetcher, ResourcesModifier
 
 LIB_PROJECT_HELP = (
     "The path to the android project whose resources you want to inspect."

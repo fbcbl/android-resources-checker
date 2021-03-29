@@ -1,4 +1,6 @@
-from models import AnalysisBreakdown, ResourceType, PackagedResource
+# analyzer.py
+
+from .models import AnalysisBreakdown, ResourceType, PackagedResource
 
 
 class ResourcesAnalyzer:

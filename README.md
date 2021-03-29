@@ -26,8 +26,7 @@ This program requires Python, supporting from 3.8.X and 3.9.x
 Imagining your app in the project `subject-app`, you can trigger the resources inspection by running:
 
 ```shell
-python android-resources-checker/main.py \ 
-  --app-path=/path/to/subject-app
+make standard-inspection --app-path=/path/to/subject-app
 ```
 
 ## License
