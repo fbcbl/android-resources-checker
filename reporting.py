@@ -58,7 +58,7 @@ class StdoutReporter(ContextReporter):
         for resource_type in ResourceType:
             rows = [
                 resource_type.name,
-                str(len(breakdown.unused_resources[resource_type])),
+                str(len(breakdown.used_resources[resource_type])),
                 str(len(breakdown.unused_resources[resource_type]))
             ]
             table.add_row(*rows)
