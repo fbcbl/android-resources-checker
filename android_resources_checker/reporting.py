@@ -1,6 +1,6 @@
 from rich.table import Table
 
-from models import ResourceType, AnalysisBreakdown
+from .models import ResourceType, AnalysisBreakdown
 
 
 def _format_bytes(size):

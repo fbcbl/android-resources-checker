@@ -2,7 +2,7 @@ import glob
 import os
 import re
 
-from models import ResourceReference, ResourceType, PackagedResource
+from .models import ResourceReference, ResourceType, PackagedResource
 
 
 class ResourcesFetcher:
