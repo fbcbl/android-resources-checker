@@ -41,8 +41,11 @@ class ResourcesFetcher:
         for filepath in (java_files + kotlin_files):
             with open(filepath) as f:
                 for line in f.readlines():
-                    for result in re.finditer("R.drawable." + RESOURCE_NAME_REGEX, line):
-                        resource_reference = ResourceReference(result.group(), ResourceType.drawable)
+                    for result in re.finditer(f"R\.({RESOURCES_OPTIONS})\.{RESOURCE_NAME_REGEX}", line):
+                        resource_split = result.group().split(".")
+                        resource_reference = ResourceReference(
+                            name=resource_split[-1],
+                            type=ResourceType[resource_split[1]])
                         resources.add(resource_reference)
 
         return resources
