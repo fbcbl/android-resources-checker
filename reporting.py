@@ -85,7 +85,8 @@ class StdoutReporter(ContextReporter):
         table.add_column("Resource Type")
 
         for grouped_resources in breakdown.unused_resources.values():
-            for package_resource in grouped_resources:
+            sorted_resources = sorted(grouped_resources, key=lambda r: r.filepath)
+            for package_resource in sorted_resources:
                 rows = [package_resource.filepath, package_resource.resource.type.name]
                 table.add_row(*rows)
 
