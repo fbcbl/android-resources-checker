@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "Fabio Carballo <fabio.og.carballo@gmail.com>"
 version = "0.1.0"
-description = ""
+description = "Check if your android resources are being unused."
 authors = ["Fabio Carballo <fabio.og.carballo@gmail.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.8"
 rich = "^10.0.0"
 click = "^7.1.2"
 black = "^20.8b1"
