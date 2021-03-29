@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from enum import Enum
 
+from typing import Dict, Set
+
 
 class ResourceType(Enum):
     drawable = ("drawable",)
@@ -12,7 +14,7 @@ class ResourceType(Enum):
 @dataclass(frozen=True)
 class ResourceReference:
     name: str
-    type: ResourceType
+    resource_type: ResourceType
 
 
 @dataclass(frozen=True)
@@ -25,6 +27,6 @@ class PackagedResource:
 @dataclass(frozen=True)
 class AnalysisBreakdown:
     project_name: str
-    used_resources: dict[ResourceType, set[PackagedResource]]
-    unused_resources: dict[ResourceType, set[PackagedResource]]
+    used_resources: Dict[ResourceType, Set[PackagedResource]]
+    unused_resources: Dict[ResourceType, Set[PackagedResource]]
     unused_size_bytes: int

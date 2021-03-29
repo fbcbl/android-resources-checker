@@ -2,11 +2,13 @@ import glob
 import os
 import re
 
+from typing import Set
+
 from .models import ResourceReference, ResourceType, PackagedResource
 
 
 class ResourcesFetcher:
-    def fetch_packaged_resources(self, project_path) -> set[PackagedResource]:
+    def fetch_packaged_resources(self, project_path) -> Set[PackagedResource]:
         resources = set()
 
         for filepath in glob.glob(project_path + "/**/res/**", recursive=True):
@@ -25,7 +27,7 @@ class ResourcesFetcher:
 
         return resources
 
-    def fetch_used_resources(self, project_path) -> set[ResourceReference]:
+    def fetch_used_resources(self, project_path) -> Set[ResourceReference]:
         resources = set()
 
         xml_regex = "@(" + RESOURCES_OPTIONS + ")/" + RESOURCE_NAME_REGEX
@@ -50,7 +52,7 @@ class ResourcesFetcher:
                         resource_split = result.group().split(".")
                         resource_reference = ResourceReference(
                             name=resource_split[-1],
-                            type=ResourceType[resource_split[1]],
+                            resource_type=ResourceType[resource_split[1]],
                         )
                         resources.add(resource_reference)
 

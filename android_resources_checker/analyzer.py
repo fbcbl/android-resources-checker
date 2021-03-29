@@ -1,4 +1,5 @@
 # analyzer.py
+from typing import Dict, Set
 
 from .models import AnalysisBreakdown, ResourceType, PackagedResource
 
@@ -6,11 +7,15 @@ from .models import AnalysisBreakdown, ResourceType, PackagedResource
 class ResourcesAnalyzer:
     def _create_breakdown(
         self, resources_list
-    ) -> dict[ResourceType, set[PackagedResource]]:
+    ) -> Dict[ResourceType, Set[PackagedResource]]:
         breakdown = {}
         for resource_type in ResourceType:
             resources_of_type = set(
-                [pr for pr in resources_list if pr.resource.type == resource_type]
+                [
+                    pr
+                    for pr in resources_list
+                    if pr.resource.resource_type == resource_type
+                ]
             )
             breakdown[resource_type] = resources_of_type
 

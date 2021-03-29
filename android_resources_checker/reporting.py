@@ -93,7 +93,7 @@ class StdoutReporter(ContextReporter):
             for package_resource in sorted_resources:
                 rows = [
                     package_resource.filepath,
-                    package_resource.resource.type.name,
+                    package_resource.resource.resource_type.name,
                     _format_to_kb(package_resource.size),
                 ]
                 table.add_row(*rows)
