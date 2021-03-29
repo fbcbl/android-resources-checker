@@ -3,7 +3,6 @@ from rich.prompt import Confirm
 
 
 class Application(object):
-
     def __init__(self, resources_fetcher, resources_modifier, analyzer, reporter):
         self.resources_fetcher = resources_fetcher
         self.resources_modifier = resources_modifier
@@ -27,7 +26,9 @@ class Application(object):
 
             if client_app_path is not None:
                 client_app_name = client_app_path.split("/")[-1]
-                client_used_refs = self.resources_fetcher.fetch_used_resources(client_app_path)
+                client_used_refs = self.resources_fetcher.fetch_used_resources(
+                    client_app_path
+                )
                 console.log(f"{client_app_name} - used resources processed!")
             else:
                 client_used_refs = []
@@ -37,7 +38,8 @@ class Application(object):
             name=app_path.split("/")[-1],
             app_used_refs=app_used_refs,
             app_packaged_res=app_packaged_res,
-            client_used_refs=client_used_refs)
+            client_used_refs=client_used_refs,
+        )
 
         # report
         self.reporter.report(analysis)

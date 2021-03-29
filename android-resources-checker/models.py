@@ -3,9 +3,9 @@ from enum import Enum
 
 
 class ResourceType(Enum):
-    drawable = "drawable",
-    color = "color",
-    anim = "anim",
+    drawable = ("drawable",)
+    color = ("color",)
+    anim = ("anim",)
     raw = "raw"
 
 
