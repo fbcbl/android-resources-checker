@@ -82,7 +82,7 @@ class StdoutReporter(ContextReporter):
     def report_unused_resources_list(self, breakdown):
         printer = self.console
 
-        printer.print(f"\n[bold green]Unused Resources List[/bold green]")
+        printer.print("\n[bold green]Unused Resources List[/bold green]")
         table = Table(show_header=True, header_style="bold magenta")
         table.pad_edge = False
         table.add_column("Resource Path")

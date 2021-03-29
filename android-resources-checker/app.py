@@ -18,7 +18,7 @@ class Application(object):
         # fetch resources data
         console = Console()
         self.reporter.resources_processing_started()
-        with console.status("[bold green]Processing project resources...") as status:
+        with console.status("[bold green]Processing project resources..."):
             app_packaged_res = self.resources_fetcher.fetch_packaged_resources(app_path)
             console.log(f"{app_name} - packaged resources processed!")
 

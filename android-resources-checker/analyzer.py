@@ -6,7 +6,8 @@ class ResourcesAnalyzer:
     def _create_breakdown(self, resources_list) -> dict[ResourceType, set[PackagedResource]]:
         breakdown = {}
         for resource_type in ResourceType:
-            resources_of_type = set([pr for pr in resources_list if pr.resource.type == resource_type])
+            resources_of_type = set([pr for pr in resources_list
+                                     if pr.resource.type == resource_type])
             breakdown[resource_type] = resources_of_type
 
         return breakdown

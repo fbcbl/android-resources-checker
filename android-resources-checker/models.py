@@ -28,4 +28,3 @@ class AnalysisBreakdown:
     used_resources: dict[ResourceType, set[PackagedResource]]
     unused_resources: dict[ResourceType, set[PackagedResource]]
     unused_size_bytes: int
-
