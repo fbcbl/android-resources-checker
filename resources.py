@@ -23,7 +23,7 @@ class ResourcesFetcher:
                 resource_size = os.stat(filepath).st_size
                 resource_ref = ResourceReference(resource_name, ResourceType[resource_type])
 
-                resources.add(PackagedResource(resource_ref, resource_size))
+                resources.add(PackagedResource(resource_ref, filepath, resource_size))
 
         logging.info("Packaged resources count [" + project_path + "] => " + str(len(resources)))
 
@@ -53,6 +53,13 @@ class ResourcesFetcher:
         logging.info("Used resources count [" + project_path + "] => " + str(len(resources)))
 
         return resources
+
+
+class ResourcesModifier:
+
+    def delete_resources(self, resources_list):
+        for packaged_resource in resources_list:
+            os.remove(packaged_resource.resource.filepath)
 
 
 RESOURCE_NAME_REGEX = "[A-Za-z1-9_]+"

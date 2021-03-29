@@ -23,6 +23,9 @@ class MetricsReporter:
     def apps(self, client_app_path, lib_app_path):
         self.output_delegate.apps(client_app_path, lib_app_path)
 
+    def deletion_completed(self, num_resources):
+        self.console.print(f"{num_resources} resources deleted! :rocket:")
+
     def report(self, breakdown):
         self.output_delegate.report(breakdown)
 

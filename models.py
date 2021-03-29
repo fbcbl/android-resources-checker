@@ -18,13 +18,14 @@ class ResourceReference:
 @dataclass(frozen=True)
 class PackagedResource:
     resource: ResourceReference
+    filepath: str
     size: int
 
 
 @dataclass(frozen=True)
 class AnalysisBreakdown:
     project_name: str
-    used_resources: dict[ResourceType, set[ResourceReference]]
-    unused_resources: dict[ResourceType, set[ResourceReference]]
+    used_resources: dict[ResourceType, set[PackagedResource]]
+    unused_resources: dict[ResourceType, set[PackagedResource]]
     unused_size_bytes: int
 

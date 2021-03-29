@@ -1,7 +1,11 @@
+from rich.prompt import Confirm
+
+
 class Application(object):
 
-    def __init__(self, resources_fetcher, analyzer, reporter):
+    def __init__(self, resources_fetcher, resources_modifier, analyzer, reporter):
         self.resources_fetcher = resources_fetcher
+        self.resources_modifier = resources_modifier
         self.analyzer = analyzer
         self.reporter = reporter
 
@@ -22,3 +26,10 @@ class Application(object):
 
         # report
         self.reporter.report(analysis)
+
+        # optional resource deletion
+        delete_unused_resources = Confirm.ask("Delete unused resources?")
+        if delete_unused_resources:
+            resources_to_delete = set.union(*analysis.unused_resources.values())
+            self.resources_modifier.delete_resources(resources_to_delete)
+            self.reporter.deletion_completed(len(resources_to_delete))
