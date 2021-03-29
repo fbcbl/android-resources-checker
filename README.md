@@ -19,7 +19,7 @@ Main features:
 
 ## Using
 
-This program requires Python, supporting from 3.9.x
+This program requires Python, supporting from 3.8.X and 3.9.x
 
 ## Inspecting your app resources.
 
