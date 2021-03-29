@@ -8,8 +8,8 @@ setup:
 	pip install black
 
 inspect:
-	flake8 android-resources-checker
-	black --check android-resources-checker
+	flake8 android_resources_checker
+	black --check android_resources_checker
 
 standard-inspection:
 	poetry run android-resources-checker \
