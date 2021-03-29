@@ -12,5 +12,5 @@ inspect:
 	black --check android-resources-checker
 
 standard-inspection:
-	poetry run android-resources-checker/main.py \
+	poetry run android-resources-checker \
 		--app-path=$(app-path)
