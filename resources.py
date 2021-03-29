@@ -1,5 +1,4 @@
 import glob
-import logging
 import os
 import re
 
@@ -14,7 +13,8 @@ class ResourcesFetcher:
         for filepath in glob.glob(project_path + "/**/res/**", recursive=True):
             match = re.match(".*/res/(" + RESOURCES_OPTIONS + ").*/", filepath)
             if match is not None:
-                filename = filepath.split("/")[-1]  # extracting the 'filename.xml' or 'filename.png'
+                # extracting the 'filename.xml' or 'filename.png'
+                filename = filepath.split("/")[-1]
                 resource_name = filename.split(".")[0]
                 resource_type = match.groups()[0]
                 resource_size = os.stat(filepath).st_size
@@ -27,10 +27,11 @@ class ResourcesFetcher:
     def fetch_used_resources(self, project_path) -> set[ResourceReference]:
         resources = set()
 
+        xml_regex = "@(" + RESOURCES_OPTIONS + ")/" + RESOURCE_NAME_REGEX
         for filepath in glob.glob(project_path + "/**/*.xml", recursive=True):
             with open(filepath) as f:
                 for line in f.readlines():
-                    for result in re.finditer("@(" + RESOURCES_OPTIONS + ")/" + RESOURCE_NAME_REGEX, line):
+                    for result in re.finditer(xml_regex, line):
                         resource_reference = ResourceReference(result.group().split("/")[-1],
                                                                ResourceType[result.groups()[0]])
                         resources.add(resource_reference)
@@ -38,10 +39,11 @@ class ResourcesFetcher:
         java_files = glob.glob(project_path + "/**/*.java", recursive=True)
         kotlin_files = glob.glob(project_path + "/**/*.kt", recursive=True)
 
+        code_regex = r"R\.(" + RESOURCES_OPTIONS + r")\." + RESOURCE_NAME_REGEX
         for filepath in (java_files + kotlin_files):
             with open(filepath) as f:
                 for line in f.readlines():
-                    for result in re.finditer(f"R\.({RESOURCES_OPTIONS})\.{RESOURCE_NAME_REGEX}", line):
+                    for result in re.finditer(code_regex, line):
                         resource_split = result.group().split(".")
                         resource_reference = ResourceReference(
                             name=resource_split[-1],
