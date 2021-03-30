@@ -17,9 +17,17 @@ Main features:
 - Listing of the unused resources (name, type and size)
 - Deletion of the unused resources
 
-## Using
+## Installing
 
 This program requires Python, supporting from 3.8.x and 3.9.x
+
+In order to install run:
+
+```shell
+pip install -U android-resources-checker
+```
+
+## Using
 
 ## Inspecting your app resources.
 
@@ -39,6 +47,10 @@ android-resources-checker \
   --app-path /path/to/lib-app \
   --client-path /path/to/client-app
 ```
+
+An example of a run could look like this:
+
+![](.github/assets/example-terminal.png)
 
 ## License
 
