@@ -1,4 +1,4 @@
-# Android Resources Check
+# Android Resources Checker
 
 
 [![Flake8](https://img.shields.io/badge/codestyle-flake8-yellow)](https://flake8.pycqa.org/en/latest/)
