@@ -17,12 +17,20 @@ CLIENT_PROJECT_HELP = (
     " project resources"
 )
 
-logging.basicConfig(level=logging.INFO)
-
 
 @click.command()
-@click.option("--app-path", metavar="PATH", required=True, help=LIB_PROJECT_HELP)
-@click.option("--client-path", metavar="PATH", required=False, help=CLIENT_PROJECT_HELP)
+@click.option(
+    "--app-path",
+    type=click.Path(resolve_path=True, exists=True, file_okay=False),
+    required=True,
+    help=LIB_PROJECT_HELP,
+)
+@click.option(
+    "--client-path",
+    type=click.Path(resolve_path=True, exists=True, file_okay=True),
+    required=False,
+    help=CLIENT_PROJECT_HELP,
+)
 def launch(app_path, client_path):
     try:
         app = Application(

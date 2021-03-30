@@ -1,4 +1,4 @@
-# Android Resources Check
+# Android Resources Checker
 
 
 [![Flake8](https://img.shields.io/badge/codestyle-flake8-yellow)](https://flake8.pycqa.org/en/latest/)
@@ -17,16 +17,24 @@ Main features:
 - Listing of the unused resources (name, type and size)
 - Deletion of the unused resources
 
-## Using
+## Installing
 
 This program requires Python, supporting from 3.8.x and 3.9.x
+
+In order to install run:
+
+```shell
+pip install -U android-resources-checker
+```
+
+## Using
 
 ## Inspecting your app resources.
 
 Imagining your app in the project `subject-app`, you can trigger the resources inspection by running:
 
 ```shell
-android-resources-checker --app-path=/path/to/subject-app
+android-resources-checker --app-path /path/to/subject-app
 ```
 
 ## Inspecting your library app resources.
@@ -36,9 +44,13 @@ resources of the library app by running:
 
 ```shell
 android-resources-checker \
-  --app-path=/path/to/lib-app \
-  --client-path=/path/to/client-app
+  --app-path /path/to/lib-app \
+  --client-path /path/to/client-app
 ```
+
+An example of a run could look like this:
+
+![](.github/assets/example-terminal.png)
 
 ## License
 
