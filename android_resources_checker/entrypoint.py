@@ -1,6 +1,5 @@
 import logging
 import sys
-from pathlib import Path
 
 import click
 from rich.console import Console
@@ -17,8 +16,6 @@ CLIENT_PROJECT_HELP = (
     "The path to the client android project that consumes the reference"
     " project resources"
 )
-
-logging.basicConfig(level=logging.INFO)
 
 
 @click.command()
