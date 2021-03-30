@@ -11,6 +11,9 @@ inspect:
 	flake8 android_resources_checker
 	black --check android_resources_checker
 
+build:
+	poetry build
+	
 test:
 	poetry run pytest tests/
 
