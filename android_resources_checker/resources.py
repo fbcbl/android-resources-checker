@@ -19,16 +19,23 @@ class ResourcesFetcher:
         return resources
 
     def _fetch_entry_resources(self, project_path, resources):
-        for filepath in glob.glob(project_path + "/**/res/values/*.xml", recursive=True):
+        for filepath in glob.glob(
+            project_path + "/**/res/values/*.xml", recursive=True
+        ):
             tree = ET.parse(filepath)
             entry_resource_types = ["dimen", "string", "color"]
             for resource_type in entry_resource_types:
                 for entry in tree.findall(resource_type):
-                    resources.add(PackagedResource(
-                        resource=ResourceReference(entry.get("name"), ResourceType[resource_type]),
-                        filepath=filepath,
-                        size=0,
-                        packaging_type=PackagingType.entry))
+                    resources.add(
+                        PackagedResource(
+                            resource=ResourceReference(
+                                entry.get("name"), ResourceType[resource_type]
+                            ),
+                            filepath=filepath,
+                            size=0,
+                            packaging_type=PackagingType.entry,
+                        )
+                    )
 
     def _fetch_file_resources(self, project_path, resources):
         for filepath in glob.glob(project_path + "/**/res/**", recursive=True):
@@ -42,11 +49,14 @@ class ResourcesFetcher:
                     resource_name, ResourceType[resource_type]
                 )
 
-                resources.add(PackagedResource(
-                    resource=resource_ref,
-                    filepath=filepath,
-                    size=resource_size,
-                    packaging_type=PackagingType.file))
+                resources.add(
+                    PackagedResource(
+                        resource=resource_ref,
+                        filepath=filepath,
+                        size=resource_size,
+                        packaging_type=PackagingType.file,
+                    )
+                )
 
     def fetch_used_resources(self, project_path) -> Set[ResourceReference]:
         resources = set()
@@ -83,7 +93,21 @@ class ResourcesFetcher:
 class ResourcesModifier:
     def delete_resources(self, resources_list):
         for packaged_resource in resources_list:
-            os.remove(packaged_resource.resource.filepath)
+            if packaged_resource.packaging_type is PackagingType.file:
+                os.remove(packaged_resource.resource.filepath)
+            else:
+                self._delete_resource_entry(packaged_resource)
+
+    def _delete_resource_entry(self, packaged_resource):
+        entry_regex = f'.*name="{packaged_resource.resource.name}".*'
+
+        with open(packaged_resource.filepath, "r") as infile:
+            lines = infile.readlines()
+
+            with open(packaged_resource.filepath, "w") as outfile:
+                for line in lines:
+                    if re.match(entry_regex, line) is None:
+                        outfile.write(line)
 
 
 RESOURCE_NAME_REGEX = "[A-Za-z1-9_]+"

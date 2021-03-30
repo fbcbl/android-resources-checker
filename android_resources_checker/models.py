@@ -12,6 +12,7 @@ class ResourceType(Enum):
     dimen = "dimen"
     string = "string"
 
+
 @dataclass(frozen=True)
 class PackagingType(Enum):
     file = "file"
