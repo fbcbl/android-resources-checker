@@ -1,6 +1,12 @@
 # CHANGELOG
 
 ## [UNRELEASED]
+### Resolve paths on arguments.
+You can now pass relative paths in arguments like this:
+
+```shell
+android-resources-checker --app-path=../../my-project
+```
 
 ## Version 0.0.3
 **2021-03-29**
