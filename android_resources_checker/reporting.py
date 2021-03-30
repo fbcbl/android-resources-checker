@@ -1,6 +1,6 @@
 from rich.table import Table
 
-from .models import ResourceType, AnalysisBreakdown
+from .models import ResourceType, AnalysisBreakdown, PackagingType
 
 
 def _format_bytes(size):
@@ -84,17 +84,21 @@ class StdoutReporter(ContextReporter):
         printer.print("\n[bold green]Unused Resources List[/bold green]")
         table = Table(show_header=True, header_style="bold magenta")
         table.pad_edge = False
-        table.add_column("Resource Path")
-        table.add_column("Resource Type")
+        table.add_column("Resource Entry")
+        table.add_column("Resource Location")
         table.add_column("Resource Size")
 
         for grouped_resources in breakdown.unused_resources.values():
             sorted_resources = sorted(grouped_resources, key=lambda r: r.filepath)
-            for package_resource in sorted_resources:
+            for r in sorted_resources:
+                resource_entry = r.filepath
+                if r.packaging_type is PackagingType.entry:
+                    resource_entry += f" ({r.resource.name})"
+
                 rows = [
-                    package_resource.filepath,
-                    package_resource.resource.resource_type.name,
-                    _format_to_kb(package_resource.size),
+                    f"R.{r.resource.resource_type.name}.{r.resource.name}",
+                    r.filepath,
+                    _format_to_kb(r.size),
                 ]
                 table.add_row(*rows)
 

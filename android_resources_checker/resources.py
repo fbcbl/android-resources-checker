@@ -4,17 +4,36 @@ import re
 
 from typing import Set
 
-from .models import ResourceReference, ResourceType, PackagedResource
+import xml.etree.ElementTree as ET
+
+from .models import ResourceReference, ResourceType, PackagedResource, PackagingType
 
 
 class ResourcesFetcher:
     def fetch_packaged_resources(self, project_path) -> Set[PackagedResource]:
         resources = set()
 
+        self._fetch_file_resources(project_path, resources)
+        self._fetch_entry_resources(project_path, resources)
+
+        return resources
+
+    def _fetch_entry_resources(self, project_path, resources):
+        for filepath in glob.glob(project_path + "/**/res/values/*.xml", recursive=True):
+            tree = ET.parse(filepath)
+            entry_resource_types = ["dimen", "string", "color"]
+            for resource_type in entry_resource_types:
+                for entry in tree.findall(resource_type):
+                    resources.add(PackagedResource(
+                        resource=ResourceReference(entry.get("name"), ResourceType[resource_type]),
+                        filepath=filepath,
+                        size=0,
+                        packaging_type=PackagingType.entry))
+
+    def _fetch_file_resources(self, project_path, resources):
         for filepath in glob.glob(project_path + "/**/res/**", recursive=True):
             match = re.match(".*/res/(" + RESOURCES_OPTIONS + ").*/", filepath)
             if match is not None:
-                # extracting the 'filename.xml' or 'filename.png'
                 filename = filepath.split("/")[-1]
                 resource_name = filename.split(".")[0]
                 resource_type = match.groups()[0]
@@ -23,9 +42,11 @@ class ResourcesFetcher:
                     resource_name, ResourceType[resource_type]
                 )
 
-                resources.add(PackagedResource(resource_ref, filepath, resource_size))
-
-        return resources
+                resources.add(PackagedResource(
+                    resource=resource_ref,
+                    filepath=filepath,
+                    size=resource_size,
+                    packaging_type=PackagingType.file))
 
     def fetch_used_resources(self, project_path) -> Set[ResourceReference]:
         resources = set()
@@ -66,4 +87,4 @@ class ResourcesModifier:
 
 
 RESOURCE_NAME_REGEX = "[A-Za-z1-9_]+"
-RESOURCES_OPTIONS = "drawable|color|anim|raw"
+RESOURCES_OPTIONS = "drawable|color|anim|raw|dimen|string"
