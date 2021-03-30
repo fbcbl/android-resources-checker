@@ -26,7 +26,7 @@ This program requires Python, supporting from 3.8.x and 3.9.x
 Imagining your app in the project `subject-app`, you can trigger the resources inspection by running:
 
 ```shell
-android-resources-checker --app-path=/path/to/subject-app
+android-resources-checker --app-path /path/to/subject-app
 ```
 
 ## Inspecting your library app resources.
@@ -36,8 +36,8 @@ resources of the library app by running:
 
 ```shell
 android-resources-checker \
-  --app-path=/path/to/lib-app \
-  --client-path=/path/to/client-app
+  --app-path /path/to/lib-app \
+  --client-path /path/to/client-app
 ```
 
 ## License
