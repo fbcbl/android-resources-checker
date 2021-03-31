@@ -5,10 +5,18 @@ from typing import Dict, Set
 
 
 class ResourceType(Enum):
-    drawable = ("drawable",)
-    color = ("color",)
-    anim = ("anim",)
+    drawable = "drawable"
+    color = "color"
+    anim = "anim"
     raw = "raw"
+    dimen = "dimen"
+    string = "string"
+
+
+@dataclass(frozen=True)
+class PackagingType(Enum):
+    file = "file"
+    entry = "entry"
 
 
 @dataclass(frozen=True)
@@ -20,6 +28,7 @@ class ResourceReference:
 @dataclass(frozen=True)
 class PackagedResource:
     resource: ResourceReference
+    packaging_type: PackagingType
     filepath: str
     size: int
 

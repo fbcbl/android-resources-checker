@@ -1,6 +1,7 @@
 # CHANGELOG
 
 ## [UNRELEASED]
+- Add inspection to resources declared as entries (`string`, `color`, `dimen`)
 
 ## Version 0.0.3
 **2021-03-29**
