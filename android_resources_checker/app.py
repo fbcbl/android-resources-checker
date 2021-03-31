@@ -18,27 +18,24 @@ class Application(object):
         console = Console()
         self.reporter.resources_processing_started()
         with console.status("[bold green]Processing project resources..."):
-            app_packaged_res = self.resources_fetcher.fetch_packaged_resources(app_path)
+            packaged_resources = self.resources_fetcher.fetch_packaged_resources(
+                app_path
+            )
             console.log(f"{app_name} - packaged resources processed!")
 
-            app_used_refs = self.resources_fetcher.fetch_used_resources(app_path)
+            usage_references = self.resources_fetcher.fetch_used_resources(app_path)
             console.log(f"{app_name} - used resources processed!")
 
             if client_app_path is not None:
                 client_app_name = client_app_path.split("/")[-1]
-                client_used_refs = self.resources_fetcher.fetch_used_resources(
-                    client_app_path
+                usage_references = usage_references.union(
+                    self.resources_fetcher.fetch_used_resources(client_app_path)
                 )
                 console.log(f"{client_app_name} - used resources processed!")
-            else:
-                client_used_refs = []
 
         # analyze data
         analysis = self.analyzer.analyze(
-            name=app_path.split("/")[-1],
-            app_used_refs=app_used_refs,
-            app_packaged_res=app_packaged_res,
-            client_used_refs=client_used_refs,
+            app_path.split("/")[-1], usage_references, packaged_resources
         )
 
         # report
