@@ -36,3 +36,9 @@ jobs:
 
       - name: Check codestyle
         run: make inspect
+
+      - name: Run tests
+        run: make test
+
+      - name: Build package
+        run: make build

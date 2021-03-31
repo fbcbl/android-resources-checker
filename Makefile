@@ -11,6 +11,12 @@ inspect:
 	flake8 android_resources_checker
 	black --check android_resources_checker
 
+build:
+	poetry build
+	
+test:
+	poetry run pytest tests/
+
 standard-inspection:
 	poetry run android-resources-checker \
 		--app-path=$(app-path)
