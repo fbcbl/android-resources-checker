@@ -4,25 +4,24 @@ import re
 
 from typing import Set
 
-import xml.etree.ElementTree as ET
-
 from .models import ResourceReference, ResourceType, PackagedResource, PackagingType
 
 
 class ResourcesFetcher:
+    def __init__(self, files_handler):
+        self.files_handler = files_handler
+
     def fetch_packaged_resources(self, project_path) -> Set[PackagedResource]:
+        xml_files = self.files_handler.xml_files(project_path)
+        file_resources = self._extract_file_resources(xml_files)
+        entry_resources = self._extract_entry_resources(xml_files)
+
+        return file_resources.union(file_resources.union(entry_resources))
+
+    def _extract_entry_resources(self, xml_files):
         resources = set()
-
-        self._fetch_file_resources(project_path, resources)
-        self._fetch_entry_resources(project_path, resources)
-
-        return resources
-
-    def _fetch_entry_resources(self, project_path, resources):
-        for filepath in glob.glob(
-            project_path + "/**/res/values/*.xml", recursive=True
-        ):
-            tree = ET.parse(filepath)
+        for filepath in xml_files:
+            tree = self.files_handler.xml_tree(filepath)
             entry_resource_types = ["dimen", "string", "color"]
             for resource_type in entry_resource_types:
                 for entry in tree.findall(resource_type):
@@ -37,14 +36,17 @@ class ResourcesFetcher:
                         )
                     )
 
-    def _fetch_file_resources(self, project_path, resources):
-        for filepath in glob.glob(project_path + "/**/res/**", recursive=True):
-            match = re.match(".*/res/(" + RESOURCES_OPTIONS + ").*/", filepath)
+        return resources
+
+    def _extract_file_resources(self, xml_files):
+        resources = set()
+        for filepath in xml_files:
+            match = re.match(".*/(" + RESOURCES_OPTIONS + ").*/", filepath)
             if match is not None:
                 filename = filepath.split("/")[-1]
                 resource_name = filename.split(".")[0]
                 resource_type = match.groups()[0]
-                resource_size = os.stat(filepath).st_size
+                resource_size = self.files_handler.file_size(filepath)
                 resource_ref = ResourceReference(
                     resource_name, ResourceType[resource_type]
                 )
@@ -57,6 +59,8 @@ class ResourcesFetcher:
                         packaging_type=PackagingType.file,
                     )
                 )
+
+        return resources
 
     def fetch_used_resources(self, project_path) -> Set[ResourceReference]:
         resources = set()
