@@ -39,3 +39,8 @@ class AnalysisBreakdown:
     used_resources: Dict[ResourceType, Set[PackagedResource]]
     unused_resources: Dict[ResourceType, Set[PackagedResource]]
     unused_size_bytes: int
+
+
+class ReportType(Enum):
+    csv = "csv"
+    stdout = "stdout"
