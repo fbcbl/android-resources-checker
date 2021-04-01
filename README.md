@@ -3,6 +3,7 @@
 
 [![Flake8](https://img.shields.io/badge/codestyle-flake8-yellow)](https://flake8.pycqa.org/en/latest/)
 [![Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Coverage](https://codecov.io/gh/fabiocarballo/android-resources-checker/branch/master/graph/badge.svg)](https://codecov.io/gh/fabiocarballo/android-resources-checker)
 [![License](https://img.shields.io/github/license/fabiocarballo/android-resources-checker)](https://choosealicense.com/licenses/mit)
 
 ## What
