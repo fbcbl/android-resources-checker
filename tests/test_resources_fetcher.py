@@ -27,8 +27,11 @@ class FakeFilesHandler(FilesHandler):
     def file_size(self, filepath):
         return self.fake_config[filepath]["size"]
 
-    def xml_tree(self, filepath):
+    def file_content(self, filepath):
         return self.fake_config[filepath]["content"]
+
+    def xml_tree(self, filepath):
+        return self.fake_config[filepath]["xml_content"]
 
 
 def test_fetch_packaged_resources():
@@ -38,19 +41,19 @@ def test_fetch_packaged_resources():
         {
             "path/to/drawable/file1.xml": {
                 "size": 10,
-                "content": ET.parse(f"{TEST_DIR}/fixtures/dummy-drawable.xml"),
+                "xml_content": ET.parse(f"{TEST_DIR}/fixtures/dummy-drawable.xml"),
             },
             "path/to/anim/file2.xml": {
                 "size": 20,
-                "content": ET.parse(f"{TEST_DIR}/fixtures/dummy-anim.xml"),
+                "xml_content": ET.parse(f"{TEST_DIR}/fixtures/dummy-anim.xml"),
             },
             "path/to/color/file3.xml": {
                 "size": 30,
-                "content": ET.parse(f"{TEST_DIR}/fixtures/dummy-color.xml"),
+                "xml_content": ET.parse(f"{TEST_DIR}/fixtures/dummy-color.xml"),
             },
             "path/to/values/file4.xml": {
                 "size": 40,
-                "content": ET.parse(f"{TEST_DIR}/fixtures/dummy-values-color.xml"),
+                "xml_content": ET.parse(f"{TEST_DIR}/fixtures/dummy-values-color.xml"),
             },
         },
     )
@@ -91,4 +94,33 @@ def test_fetch_packaged_resources():
             "path/to/values/file4.xml",
             0,
         ),
+    }
+
+
+def test_fetch_used_resources():
+    # Arrange
+    fake_files_handler = FakeFilesHandler(
+        "root",
+        {
+            "path/to/values/dummy-layout.xml": {
+                "content": open(f"{TEST_DIR}/fixtures/dummy-layout.xml").readlines()
+            }
+        },
+    )
+
+    resources_fetcher = ResourcesFetcher(fake_files_handler)
+
+    # Act
+    references = resources_fetcher.fetch_used_resources("root")
+
+    # Assert
+    assert references == {
+        ResourceReference("background_white", ResourceType.drawable),
+        ResourceReference("spacing_small", ResourceType.dimen),
+        ResourceReference("dummy_string", ResourceType.string),
+        ResourceReference("red", ResourceType.color),
+        ResourceReference("spacing_normal", ResourceType.dimen),
+        ResourceReference("background_red", ResourceType.drawable),
+        ResourceReference("file3", ResourceType.color),
+        ResourceReference("spacing_large", ResourceType.dimen),
     }

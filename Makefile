@@ -15,7 +15,7 @@ build:
 	poetry build
 	
 test:
-	poetry run pytest --cov-report=xml --cov=android_resources_checker tests/
+	poetry run pytest -vv --cov-report=xml --cov=android_resources_checker tests/
 
 standard-inspection:
 	poetry run android-resources-checker \
