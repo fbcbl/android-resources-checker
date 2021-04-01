@@ -2,6 +2,8 @@
 
 ## [UNRELEASED]
 
+- Add CSV reports via the `--reports-dir` option.
+
 ## Version 0.0.4
 **2021-04-01**
 
