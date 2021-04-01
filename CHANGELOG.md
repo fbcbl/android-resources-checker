@@ -2,6 +2,9 @@
 
 ## [UNRELEASED]
 
+## Version 0.0.4
+**2021-04-01**
+
 - Add inspection to resources declared as entries (`string`, `color`, `dimen`)
 - Renamed `--app-path` to `--app`
 - Renamed `--client-path` to `--client`  
