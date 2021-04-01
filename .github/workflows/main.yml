@@ -42,3 +42,6 @@ jobs:
 
       - name: Build package
         run: make build
+
+      - name: Upload test reports to Codecov
+        uses: codecov/codecov-action@v1.3.1
