@@ -9,8 +9,8 @@ class Application(object):
         self.analyzer = analyzer
         self.reporter = reporter
 
-    def execute(self, app_path, client_app_path=None):
-        self.reporter.apps(client_app_path, app_path)
+    def execute(self, app_path, clients=None):
+        self.reporter.apps(app_path, clients)
 
         app_name = app_path.split("/")[-1]
 
@@ -25,11 +25,10 @@ class Application(object):
 
             usage_references = self.resources_fetcher.fetch_used_resources(app_path)
             console.log(f"{app_name} - used resources processed!")
-
-            if client_app_path is not None:
-                client_app_name = client_app_path.split("/")[-1]
+            for client in clients:
+                client_app_name = client.split("/")[-1]
                 usage_references = usage_references.union(
-                    self.resources_fetcher.fetch_used_resources(client_app_path)
+                    self.resources_fetcher.fetch_used_resources(client)
                 )
                 console.log(f"{client_app_name} - used resources processed!")
 

@@ -23,8 +23,8 @@ class Reporter:
         self.console = console
         self.output_delegate = StdoutReporter(console)
 
-    def apps(self, client_app_path, lib_app_path):
-        self.output_delegate.apps(client_app_path, lib_app_path)
+    def apps(self, lib_app_path, clients):
+        self.output_delegate.apps(lib_app_path, clients)
 
     def deletion_completed(self, num_resources):
         self.console.print(f"{num_resources} resources deleted! :rocket:")
@@ -43,10 +43,10 @@ class ContextReporter:
     def __init__(self, console):
         self.console = console
 
-    def apps(self, client_app_path, lib_app_path):
+    def apps(self, lib_app_path, clients):
         self.__print("Reference app", lib_app_path, "cyan")
-        if client_app_path is not None:
-            self.__print("Client app", client_app_path, "cyan")
+        for client in clients:
+            self.__print("Client app", client, "cyan")
 
     def __print(self, prefix, content, color):
         printer = self.console
