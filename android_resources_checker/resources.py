@@ -1,4 +1,3 @@
-import glob
 import os
 import re
 
@@ -66,30 +65,25 @@ class ResourcesFetcher:
         resources = set()
 
         xml_regex = "@(" + RESOURCES_OPTIONS + ")/" + RESOURCE_NAME_REGEX
-        for filepath in glob.glob(project_path + "/**/*.xml", recursive=True):
-            with open(filepath) as f:
-                for line in f.readlines():
-                    for result in re.finditer(xml_regex, line):
-                        resource_reference = ResourceReference(
-                            result.group().split("/")[-1],
-                            ResourceType[result.groups()[0]],
-                        )
-                        resources.add(resource_reference)
-
-        java_files = glob.glob(project_path + "/**/*.java", recursive=True)
-        kotlin_files = glob.glob(project_path + "/**/*.kt", recursive=True)
+        for filepath in self.files_handler.xml_files(project_path):
+            for line in self.files_handler.file_content(filepath):
+                for result in re.finditer(xml_regex, line):
+                    resource_reference = ResourceReference(
+                        result.group().split("/")[-1],
+                        ResourceType[result.groups()[0]],
+                    )
+                    resources.add(resource_reference)
 
         code_regex = r"R\.(" + RESOURCES_OPTIONS + r")\." + RESOURCE_NAME_REGEX
-        for filepath in java_files + kotlin_files:
-            with open(filepath) as f:
-                for line in f.readlines():
-                    for result in re.finditer(code_regex, line):
-                        resource_split = result.group().split(".")
-                        resource_reference = ResourceReference(
-                            name=resource_split[-1],
-                            resource_type=ResourceType[resource_split[1]],
-                        )
-                        resources.add(resource_reference)
+        for filepath in self.files_handler.java_kt_files(project_path):
+            for line in self.files_handler.file_content(filepath):
+                for result in re.finditer(code_regex, line):
+                    resource_split = result.group().split(".")
+                    resource_reference = ResourceReference(
+                        name=resource_split[-1],
+                        resource_type=ResourceType[resource_split[1]],
+                    )
+                    resources.add(resource_reference)
 
         return resources
 
