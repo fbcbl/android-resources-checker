@@ -1,7 +1,12 @@
 # CHANGELOG
 
 ## [UNRELEASED]
+
 - Add inspection to resources declared as entries (`string`, `color`, `dimen`)
+- Renamed `--app-path` to `--app`
+- Renamed `--client-path` to `--client`  
+- Add ability to provide multiple clients.
+    * This is done via the `--client` flag; you should use one for each of the clients.
 
 ## Version 0.0.3
 **2021-03-29**
