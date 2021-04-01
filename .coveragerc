@@ -1,0 +1,5 @@
+
+[run]
+omit =
+	android_resources_checker/app.py
+	android_resources_checker/reporting.py

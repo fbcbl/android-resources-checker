@@ -35,7 +35,7 @@ pip install -U android-resources-checker
 Imagining your app in the project `subject-app`, you can trigger the resources inspection by running:
 
 ```shell
-android-resources-checker --app-path /path/to/subject-app
+android-resources-checker --app /path/to/subject-app
 ```
 
 ## Inspecting your library app resources.
@@ -45,8 +45,9 @@ resources of the library app by running:
 
 ```shell
 android-resources-checker \
-  --app-path /path/to/lib-app \
-  --client-path /path/to/client-app
+  --app /path/to/lib-app \
+  --client /path/to/client-app-1 \
+  --client /path/to/client-app-2
 ```
 
 An example of a run could look like this:
