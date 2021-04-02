@@ -2,6 +2,9 @@
 
 ## [UNRELEASED]
 
+## Version 0.0.5
+**2021-04-02**
+
 - Add CSV reports via the `--reports-dir` option.
 - Fixes bug that ignored that didn't process resources that are not xml (such as the ones usually placed on `raw`)
 
