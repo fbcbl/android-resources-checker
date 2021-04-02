@@ -148,3 +148,29 @@ def test_fetch_used_resources():
         ResourceReference("programatic_1", ResourceType.color),
         ResourceReference("programatic_2", ResourceType.color),
     }
+
+
+def test_styles_usage_detection():
+    # Arrange
+    fake_files_handler = FakeFilesHandler(
+        "root",
+        {
+            "path/to/values/dummy-styles.xml": {
+                "content": open(f"{TEST_DIR}/fixtures/dummy-styles.xml").readlines()
+            },
+        },
+    )
+
+    resources_fetcher = ResourcesFetcher(fake_files_handler)
+
+    # Act
+    references = resources_fetcher.fetch_used_resources("root")
+
+    # Assert
+    expected_used_styles = {
+        ResourceReference("BaseThemeB", ResourceType.style),
+        ResourceReference("BaseThemeC.BaseThemeD", ResourceType.style),
+        ResourceReference("BaseThemeG", ResourceType.style),
+    }
+
+    assert references == expected_used_styles
