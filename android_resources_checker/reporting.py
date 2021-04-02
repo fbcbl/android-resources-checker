@@ -29,7 +29,6 @@ def _format_to_kb(size):
 
 class Reporter:
     def __init__(self, console, reporters):
-        super().__init__(console)
         self.console = console
         self.reporters = reporters
 
