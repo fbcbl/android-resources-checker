@@ -150,7 +150,7 @@ def test_fetch_used_resources():
     }
 
 
-def test_styles_usage_detection():
+def test_styles_xml_usage_detection():
     # Arrange
     fake_files_handler = FakeFilesHandler(
         "root",
@@ -168,9 +168,38 @@ def test_styles_usage_detection():
 
     # Assert
     expected_used_styles = {
+        ResourceReference("BaseThemeA", ResourceType.style),
+        ResourceReference("BaseThemeA.ThemeA", ResourceType.style),
         ResourceReference("BaseThemeB", ResourceType.style),
+        ResourceReference("BaseThemeB.ThemeB", ResourceType.style),
         ResourceReference("BaseThemeC.BaseThemeD", ResourceType.style),
         ResourceReference("BaseThemeG", ResourceType.style),
+        ResourceReference("BaseThemeG.ThemeG", ResourceType.style),
+    }
+
+    assert references == expected_used_styles
+
+
+def test_styles_programatic_usage_detection():
+    # Arrange
+    fake_files_handler = FakeFilesHandler(
+        "root",
+        {
+            "path/to/MyClass.kt": {
+                "content": open(f"{TEST_DIR}/fixtures/dummy-styles.kt").readlines()
+            },
+        },
+    )
+
+    resources_fetcher = ResourcesFetcher(fake_files_handler)
+
+    # Act
+    references = resources_fetcher.fetch_used_resources("root")
+
+    # Assert
+    expected_used_styles = {
+        ResourceReference("MyTheme.ThemeA.ThemeB", ResourceType.style),
+        ResourceReference("OtherTheme", ResourceType.style),
     }
 
     assert references == expected_used_styles

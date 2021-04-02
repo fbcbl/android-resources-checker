@@ -67,7 +67,9 @@ class ResourcesFetcher:
         resources = set()
 
         xml_regex = "@(" + RESOURCES_OPTIONS + ")/" + RESOURCE_NAME_REGEX
-        for filepath in self.files_handler.resource_files(project_path, extension="xml"):
+        for filepath in self.files_handler.resource_files(
+            project_path, extension="xml"
+        ):
             # look-up for styles
             styles_references = self._style_usages_in_xml(filepath)
             resources = resources.union(styles_references)
@@ -85,10 +87,14 @@ class ResourcesFetcher:
             for line in self.files_handler.file_content(filepath):
                 for result in re.finditer(code_regex, line):
                     resource_split = result.group().split(".")
-                    resource_reference = ResourceReference(
-                        name=resource_split[-1],
-                        resource_type=ResourceType[resource_split[1]],
+                    resource_type = ResourceType[resource_split[1]]
+                    resource_name = (
+                        resource_split[-1]
+                        if resource_type is not ResourceType.style
+                        else resource_split[-1].replace("_", ".")
                     )
+
+                    resource_reference = ResourceReference(resource_name, resource_type)
                     resources.add(resource_reference)
 
         return resources
@@ -97,21 +103,19 @@ class ResourcesFetcher:
         usages = set()
 
         style_usage_regexes = [
-            r'@style/([A-Za-z\.]+)',  # <item name="theme">@style/MyStyle</item>
-            r'parent="([A-Za-z\.]+)\..*"',  # <style name="OtherThemeB" parent="BaseThemeB.OtherTheme"/>
-            r'style name="([A-Za-z\.]+)\..*"'  # <style name="OtherThemeB.OtherThemeC.OtherThemeD" />
+            # <item name="theme">@style/MyStyle</item>
+            r"@style/([A-Za-z\.]+)",
+            # <style name="OtherThemeB" parent="BaseThemeB.OtherTheme"/>
+            r'parent="([A-Za-z\.]+)"',
+            # <style name="OtherThemeB.OtherThemeC.OtherThemeD" />
+            r'style name="([A-Za-z\.]+)\..*"',
         ]
 
         for line in self.files_handler.file_content(filepath):
             for regex in style_usage_regexes:
                 match = re.search(regex, line)
                 if match is not None:
-                    usages.add(
-                        ResourceReference(
-                            match.groups()[0],
-                            ResourceType.style
-                        )
-                    )
+                    usages.add(ResourceReference(match.groups()[0], ResourceType.style))
 
         return usages
 
