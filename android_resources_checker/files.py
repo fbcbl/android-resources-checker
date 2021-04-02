@@ -4,8 +4,8 @@ import xml.etree.ElementTree
 
 
 class FilesHandler:
-    def xml_files(self, root):
-        return glob.glob(root + "/**/res/**/*.xml", recursive=True)
+    def resource_files(self, root, extension="*"):
+        return glob.glob(f"{root}/**/res/**/*.{extension}", recursive=True)
 
     def java_kt_files(self, root):
         java_files = glob.glob(root + "/**/*.java", recursive=True)

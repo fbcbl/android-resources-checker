@@ -54,6 +54,20 @@ An example of a run could look like this:
 
 ![](.github/assets/example-terminal.png)
 
+## Reports
+
+The default report will be always be displayed in your stdout.
+
+You can specify an optional directory where to write the reports in the form of CSV files. For that use the `--reports-dir` 
+option.
+
+For example:
+
+```shell
+android-resources-checker \
+  --app /path/to/app \ 
+  --reports-dir /path/to/reports
+```
 ## License
 
 ```

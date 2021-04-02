@@ -11,8 +11,10 @@ class ResourcesFetcher:
         self.files_handler = files_handler
 
     def fetch_packaged_resources(self, project_path) -> Set[PackagedResource]:
-        xml_files = self.files_handler.xml_files(project_path)
-        file_resources = self._extract_file_resources(xml_files)
+        resource_files = self.files_handler.resource_files(project_path)
+        xml_files = [f for f in resource_files if f.endswith(".xml")]
+
+        file_resources = self._extract_file_resources(resource_files)
         entry_resources = self._extract_entry_resources(xml_files)
 
         return file_resources.union(file_resources.union(entry_resources))
@@ -37,9 +39,9 @@ class ResourcesFetcher:
 
         return resources
 
-    def _extract_file_resources(self, xml_files):
+    def _extract_file_resources(self, resource_files):
         resources = set()
-        for filepath in xml_files:
+        for filepath in resource_files:
             match = re.match(".*/(" + RESOURCES_OPTIONS + ").*/", filepath)
             if match is not None:
                 filename = filepath.split("/")[-1]
@@ -65,7 +67,9 @@ class ResourcesFetcher:
         resources = set()
 
         xml_regex = "@(" + RESOURCES_OPTIONS + ")/" + RESOURCE_NAME_REGEX
-        for filepath in self.files_handler.xml_files(project_path):
+        for filepath in self.files_handler.resource_files(
+            project_path, extension="xml"
+        ):
             for line in self.files_handler.file_content(filepath):
                 for result in re.finditer(xml_regex, line):
                     resource_reference = ResourceReference(

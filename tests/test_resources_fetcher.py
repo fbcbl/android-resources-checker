@@ -18,9 +18,20 @@ class FakeFilesHandler(FilesHandler):
         self.root_path = root_path
         self.fake_config = fake_config
 
-    def xml_files(self, root):
+    def java_kt_files(self, root):
+        return [
+            f
+            for f in self.fake_config.keys()
+            if f.endswith(".kt") or f.endswith(".java")
+        ]
+
+    def resource_files(self, root, extension="*"):
         if self.root_path == root:
-            return self.fake_config.keys()
+            return [
+                f
+                for f in self.fake_config.keys()
+                if extension == "*" or f.endswith(extension)
+            ]
         else:
             return []
 
@@ -55,6 +66,7 @@ def test_fetch_packaged_resources():
                 "size": 40,
                 "xml_content": ET.parse(f"{TEST_DIR}/fixtures/dummy-values-color.xml"),
             },
+            "path/to/raw/lottie.json": {"size": 500},
         },
     )
     resources_fetcher = ResourcesFetcher(fake_files_handler)
@@ -94,6 +106,12 @@ def test_fetch_packaged_resources():
             "path/to/values/file4.xml",
             0,
         ),
+        PackagedResource(
+            ResourceReference("lottie", ResourceType.raw),
+            PackagingType.file,
+            "path/to/raw/lottie.json",
+            500,
+        ),
     }
 
 
@@ -104,7 +122,10 @@ def test_fetch_used_resources():
         {
             "path/to/values/dummy-layout.xml": {
                 "content": open(f"{TEST_DIR}/fixtures/dummy-layout.xml").readlines()
-            }
+            },
+            "path/to/dummy.kt": {
+                "content": open(f"{TEST_DIR}/fixtures/dummy-class.kt").readlines()
+            },
         },
     )
 
@@ -123,4 +144,7 @@ def test_fetch_used_resources():
         ResourceReference("background_red", ResourceType.drawable),
         ResourceReference("file3", ResourceType.color),
         ResourceReference("spacing_large", ResourceType.dimen),
+        ResourceReference("drawable_used_programatically", ResourceType.drawable),
+        ResourceReference("programatic_1", ResourceType.color),
+        ResourceReference("programatic_2", ResourceType.color),
     }
