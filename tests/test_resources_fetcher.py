@@ -18,9 +18,13 @@ class FakeFilesHandler(FilesHandler):
         self.root_path = root_path
         self.fake_config = fake_config
 
-    def xml_files(self, root):
+    def resource_files(self, root, extension="*"):
         if self.root_path == root:
-            return self.fake_config.keys()
+            return [
+                f
+                for f in self.fake_config.keys()
+                if extension == "*" or f.endswith(extension)
+            ]
         else:
             return []
 
@@ -55,6 +59,7 @@ def test_fetch_packaged_resources():
                 "size": 40,
                 "xml_content": ET.parse(f"{TEST_DIR}/fixtures/dummy-values-color.xml"),
             },
+            "path/to/raw/lottie.json": {"size": 500},
         },
     )
     resources_fetcher = ResourcesFetcher(fake_files_handler)
@@ -93,6 +98,12 @@ def test_fetch_packaged_resources():
             PackagingType.entry,
             "path/to/values/file4.xml",
             0,
+        ),
+        PackagedResource(
+            ResourceReference("lottie", ResourceType.raw),
+            PackagingType.file,
+            "path/to/raw/lottie.json",
+            500,
         ),
     }
 
