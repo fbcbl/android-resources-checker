@@ -2,6 +2,8 @@
 
 ## [UNRELEASED]
 
+- Add inspection to `style` resources.
+
 ## Version 0.0.6
 **2021-04-02**
 

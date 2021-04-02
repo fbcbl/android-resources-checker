@@ -11,6 +11,7 @@ class ResourceType(Enum):
     raw = "raw"
     dimen = "dimen"
     string = "string"
+    style = "style"
 
 
 @dataclass(frozen=True)

@@ -61,6 +61,7 @@ def test_analyze_resources_usage():
             ResourceType.drawable: {drawable_0, drawable_2},
             ResourceType.raw: set(),
             ResourceType.string: set(),
+            ResourceType.style: set(),
         },
         unused_resources={
             ResourceType.anim: set(),
@@ -69,6 +70,7 @@ def test_analyze_resources_usage():
             ResourceType.drawable: {drawable_1},
             ResourceType.raw: set(),
             ResourceType.string: set(),
+            ResourceType.style: set(),
         },
         unused_size_bytes=80,
     )
