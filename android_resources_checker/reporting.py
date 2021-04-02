@@ -27,24 +27,16 @@ def _format_to_kb(size):
     return f"{size / 2 ** 10:.2f} kb"
 
 
-class ContextReporter:
-    def __init__(self, console):
+class Reporter:
+    def __init__(self, console, reporters):
+        super().__init__(console)
         self.console = console
+        self.reporters = reporters
 
     def apps(self, lib_app_path, clients):
         self.__print("Reference app", lib_app_path, "cyan")
         for client in clients:
             self.__print("Client app", client, "cyan")
-
-    def __print(self, prefix, content, color):
-        printer = self.console
-        printer.print(f"{prefix} → [bold {color}]{content}[/bold {color}]")
-
-
-class Reporter(ContextReporter):
-    def __init__(self, console, reporters):
-        super().__init__(console)
-        self.reporters = reporters
 
     def deletion_completed(self, num_resources):
         self.console.print(f"{num_resources} resources deleted! :rocket:")
@@ -52,13 +44,23 @@ class Reporter(ContextReporter):
     def resources_processing_started(self):
         self.console.print("\n[bold]Processing:[/bold]")
 
-    def reporting_started(self):
+    def reporting_started(self, breakdown):
         self.console.print("\n[bold]Reporting:[/bold]")
+        self.console.print(
+            f"\nProject: [bold green]{breakdown.project_name}[/bold green]"
+        )
+        self.console.print(
+            f"\nPotential size savings → {_format_bytes(breakdown.unused_size_bytes)}"
+        )
 
     def report(self, breakdown):
         for reporter in self.reporters:
             reporter.report(breakdown)
             reporter.report_unused_resources_list(breakdown)
+
+    def __print(self, prefix, content, color):
+        printer = self.console
+        printer.print(f"{prefix} → [bold {color}]{content}[/bold {color}]")
 
 
 class AnalysisReporter:
@@ -146,12 +148,8 @@ class CsvAnalysisReporter(AnalysisReporter):
 class StdoutReporter(AnalysisReporter):
     def report(self, breakdown: AnalysisBreakdown):
         printer = self.console
-        printer.print("\nAnalysis done with success!")
+        printer.print("\n[bold green]Resources Usage[/bold green]")
 
-        printer.print(f"\nProject: [bold green]{breakdown.project_name}[/bold green]")
-        printer.print(
-            f"\nPotential size savings → {_format_bytes(breakdown.unused_size_bytes)}"
-        )
         table = Table(show_header=True, header_style="bold magenta")
         table.pad_edge = False
 

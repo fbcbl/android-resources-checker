@@ -38,7 +38,7 @@ class Application(object):
         )
 
         # report
-        self.reporter.reporting_started()
+        self.reporter.reporting_started(analysis)
         self.reporter.report(analysis)
 
         # optional resource deletion
