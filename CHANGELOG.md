@@ -2,6 +2,11 @@
 
 ## [UNRELEASED]
 
+## Version 0.0.7
+- Add inspection to `style` resources.
+- Update `LICENSE.md` and `README.md` with due copyright to Dotanuki Labs given that the structure/base of this project 
+  was highly inspired from [Bitrise Reports](https://github.com/dotanuki-labs/bitrise-reports).
+
 ## Version 0.0.6
 **2021-04-02**
 

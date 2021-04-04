@@ -50,6 +50,7 @@ def test_csv_report_usage_breakdown(tmpdir, breakdown_for_usage):
         ["drawable", "3", "2"],
         ["raw", "0", "0"],
         ["string", "0", "0"],
+        ["style", "0", "0"],
     ]
     file_lines = []
     with (open(f"{tmpdir}/reports/resources_usage.csv")) as f:
@@ -163,6 +164,7 @@ def test_stdout_report_usage_breakdown(breakdown_for_usage):
     expected_table.add_row(*["drawable", "3", "2"])
     expected_table.add_row(*["raw", "0", "0"])
     expected_table.add_row(*["string", "0", "0"])
+    expected_table.add_row(*["style", "0", "0"])
 
     expected_stdout = ["\n[bold green]Resources Usage[/bold green]", expected_table]
 

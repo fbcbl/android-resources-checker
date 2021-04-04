@@ -1,0 +1,21 @@
+<resources>
+    <style name="BaseThemeA"/>
+
+    <!-- usage via parent directly -->
+    <style name="OtherThemeA" parent="BaseThemeA"/>
+    <style name="OtherThemeA" parent="BaseThemeA.ThemeA"/>
+
+    <!-- usage via parent via @style reference -->
+    <style name="OtherThemeB" parent="@style/BaseThemeB"/>
+    <style name="OtherThemeB" parent="@style/BaseThemeB.ThemeB"/>
+
+    <!-- usage via parent in declaration -->
+    <style name="BaseThemeC.BaseThemeD.OtherThemeD"/>
+    <style name="BaseThemeC"/>
+
+    <style name="BaseThemeF">
+        <!-- usage via style in attribute -->
+        <item theme="@style/BaseThemeG"/>
+        <item theme="@style/BaseThemeG.ThemeG"/>
+    </style>
+</resources>
