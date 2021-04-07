@@ -2,6 +2,8 @@
 
 ## [UNRELEASED]
 
+-- Add ability to use it as a validation tool using the `--check` option.
+
 ## Version 0.0.7
 - Add inspection to `style` resources.
 - Update `LICENSE.md` and `README.md` with due copyright to Dotanuki Labs given that the structure/base of this project 
