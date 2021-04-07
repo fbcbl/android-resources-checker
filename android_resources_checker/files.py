@@ -7,6 +7,9 @@ class FilesHandler:
     def resource_files(self, root, extension="*"):
         return glob.glob(f"{root}/**/res/**/*.{extension}", recursive=True)
 
+    def files_by_type(self, root, extension="*"):
+        return glob.glob(f"{root}/**/*.{extension}", recursive=True)
+
     def java_kt_files(self, root):
         java_files = glob.glob(root + "/**/*.java", recursive=True)
         kotlin_files = glob.glob(root + "/**/*.kt", recursive=True)

@@ -35,6 +35,16 @@ class FakeFilesHandler(FilesHandler):
         else:
             return []
 
+    def files_by_type(self, root, extension="*"):
+        if self.root_path == root:
+            return [
+                f
+                for f in self.fake_config.keys()
+                if extension == "*" or f.endswith(extension)
+            ]
+        else:
+            return []
+
     def file_size(self, filepath):
         return self.fake_config[filepath]["size"]
 
