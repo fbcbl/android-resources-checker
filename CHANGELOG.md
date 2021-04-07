@@ -2,6 +2,11 @@
 
 ## [UNRELEASED]
 
+## Version 0.0.8
+- Add ability to use it as a validation tool using the `--check` option.
+- Specify the type of report using the `--report=(CSV|STDOUT)` (the default is to run all).  
+- Fixes bug that didn't check for resource usages in the `AndroidManifest.xml`
+
 ## Version 0.0.7
 - Add inspection to `style` resources.
 - Update `LICENSE.md` and `README.md` with due copyright to Dotanuki Labs given that the structure/base of this project 
