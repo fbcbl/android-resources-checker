@@ -67,9 +67,7 @@ class ResourcesFetcher:
         resources = set()
 
         xml_regex = "@(" + RESOURCES_OPTIONS + ")/" + RESOURCE_NAME_REGEX
-        for filepath in self.files_handler.resource_files(
-            project_path, extension="xml"
-        ):
+        for filepath in self.files_handler.files_by_type(project_path, extension="xml"):
             # look-up for styles
             styles_references = self._style_usages_in_xml(filepath)
             resources = resources.union(styles_references)
