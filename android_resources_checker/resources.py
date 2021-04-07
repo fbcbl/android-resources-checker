@@ -138,5 +138,5 @@ class ResourcesModifier:
                         outfile.write(line)
 
 
-RESOURCE_NAME_REGEX = "[A-Za-z1-9_]+"
+RESOURCE_NAME_REGEX = "[A-Za-z0-9_]+"
 RESOURCES_OPTIONS = "|".join([r.name for r in ResourceType])
