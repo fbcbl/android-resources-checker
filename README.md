@@ -55,10 +55,11 @@ An example of a run could look like this:
 
 ## Reports
 
-The default report will be always be displayed in your stdout. You can control if the reporting is sent to the stdout
-with the flag `--stdout` or `--no-stdout`.
+The default behavior is to generate reports on both the stdout and CSV.
 
-You can specify an optional directory where to write the reports in the form of CSV files. For that use
+You can specify a single type of report using the `--report=(CSV|STDOUT)` option.
+
+If using CSV reports, you can specify the directory where to write the reports in the form of CSV files. For that use
 the `--reports-dir` option.
 
 For example:
@@ -72,8 +73,9 @@ android-resources-checker \
 ## Validation
 
 There is also the option to run this as a validation tool. In this case, it will fail with an error if any unused
-resources are found. For that you can specify the `--check` or `--no-check` flag (the default is `--no-check`, which
-will perform no validations)
+resources are found. 
+
+To specify the validation use the `--check` flag (the default behavior is to perform no validation).
 
 ## License
 
