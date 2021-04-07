@@ -4,11 +4,21 @@ import xml.etree.ElementTree
 
 
 class FilesHandler:
-    def resource_files(self, root, extension="*"):
-        return glob.glob(f"{root}/**/res/**/*.{extension}", recursive=True)
+    def resource_files(self, root):
+        return [
+            os.path.join(d, x)
+            for d, dirs, files in os.walk(root)
+            for x in files
+            if "/res/" in d
+        ]
 
-    def files_by_type(self, root, extension="*"):
-        return glob.glob(f"{root}/**/*.{extension}", recursive=True)
+    def files_by_type(self, root, extension):
+        return [
+            os.path.join(d, x)
+            for d, dirs, files in os.walk(root)
+            for x in files
+            if x.endswith(extension)
+        ]
 
     def java_kt_files(self, root):
         java_files = glob.glob(root + "/**/*.java", recursive=True)

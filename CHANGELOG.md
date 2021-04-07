@@ -2,6 +2,9 @@
 
 ## [UNRELEASED]
 
+- Fix bug that was not considering resource names with '0' in the name.
+- Fix bug that was not considering all files of the project.
+
 ## Version 0.0.8
 - Add ability to use it as a validation tool using the `--check` option.
 - Specify the type of report using the `--report=(CSV|STDOUT)` (the default is to run all).  
