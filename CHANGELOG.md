@@ -3,7 +3,7 @@
 ## [UNRELEASED]
 
 - Add ability to use it as a validation tool using the `--check` option.
-- Add ability to control stdout reporting using `--stdout` or `--no-stdout` flags.
+- Specify the type of report using the `--report=(CSV|STDOUT)` (the default is to run all).  
 - Fixes bug that didn't check for resource usages in the `AndroidManifest.xml`
 
 ## Version 0.0.7
