@@ -43,13 +43,17 @@ REPORTS_DIR_HELP = "The directory where the csv reports will be written."
     default=None,
     help=REPORTS_DIR_HELP,
 )
+@click.option("--stdout/--no-stdout", default=True)
 @click.option("--check/--no-check", default=False)
-def launch(app, client, reports_dir, check):
+def launch(app, client, reports_dir, stdout, check):
     try:
         console = Console()
         error_console = Console(stderr=True, style="bold red")
 
-        reporters = [StdoutReporter(console)]
+        reporters = []
+        if stdout:
+            reporters.append(StdoutReporter(console))
+
         if reports_dir is not None:
             reporters.append(CsvAnalysisReporter(console, reports_dir))
 

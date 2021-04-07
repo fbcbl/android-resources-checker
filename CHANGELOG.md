@@ -2,7 +2,8 @@
 
 ## [UNRELEASED]
 
--- Add ability to use it as a validation tool using the `--check` option.
+- Add ability to use it as a validation tool using the `--check` option.
+- Add ability to control stdout reporting using `--stdout` or `--no-stdout` flags.
 
 ## Version 0.0.7
 - Add inspection to `style` resources.

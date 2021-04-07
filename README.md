@@ -55,11 +55,11 @@ An example of a run could look like this:
 
 ## Reports
 
-The default report will be always be displayed in your stdout.
+The default report will be always be displayed in your stdout. You can control if the reporting is sent to the stdout
+with the flag `--stdout` or `--no-stdout`.
 
 You can specify an optional directory where to write the reports in the form of CSV files. For that use
-the `--reports-dir`
-option.
+the `--reports-dir` option.
 
 For example:
 
