@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "android-resources-checker"
-version = "0.0.8"
+version = "0.0.9"
 description = "Check if your android resources are being unused."
 authors = ["Fabio Carballo <fabio.og.carballo@gmail.com>"]
 license = "MIT"

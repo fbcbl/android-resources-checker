@@ -2,6 +2,7 @@
 
 ## [UNRELEASED]
 
+# Version 0.0.9
 - Fix bug that was not considering resource names with '0' in the name.
 - Fix bug that was not considering all files of the project.
 
