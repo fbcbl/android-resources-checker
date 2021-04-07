@@ -2,6 +2,7 @@
 
 ## [UNRELEASED]
 
+## Version 0.0.8
 - Add ability to use it as a validation tool using the `--check` option.
 - Specify the type of report using the `--report=(CSV|STDOUT)` (the default is to run all).  
 - Fixes bug that didn't check for resource usages in the `AndroidManifest.xml`
