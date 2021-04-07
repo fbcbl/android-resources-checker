@@ -28,8 +28,9 @@ def _format_to_kb(size):
 
 
 class Reporter:
-    def __init__(self, console, reporters):
+    def __init__(self, console, error_console, reporters):
         self.console = console
+        self.error_console = error_console
         self.reporters = reporters
 
     def apps(self, lib_app_path, clients):
@@ -56,6 +57,9 @@ class Reporter:
         for reporter in self.reporters:
             reporter.report(breakdown)
             reporter.report_unused_resources_list(breakdown)
+
+    def error(self, error):
+        self.error_console.print(error)
 
     def __print(self, prefix, content, color):
         printer = self.console

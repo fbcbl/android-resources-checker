@@ -9,6 +9,7 @@ from .app import Application
 from .files import FilesHandler
 from .reporting import Reporter, CsvAnalysisReporter, StdoutReporter
 from .resources import ResourcesFetcher, ResourcesModifier
+from .validator import Validator
 
 LIB_PROJECT_HELP = (
     "The path to the android project whose resources you want to inspect."
@@ -42,9 +43,12 @@ REPORTS_DIR_HELP = "The directory where the csv reports will be written."
     default=None,
     help=REPORTS_DIR_HELP,
 )
-def launch(app, client, reports_dir):
+@click.option("--check/--no-check", default=False)
+def launch(app, client, reports_dir, check):
     try:
         console = Console()
+        error_console = Console(stderr=True, style="bold red")
+
         reporters = [StdoutReporter(console)]
         if reports_dir is not None:
             reporters.append(CsvAnalysisReporter(console, reports_dir))
@@ -53,9 +57,10 @@ def launch(app, client, reports_dir):
             resources_fetcher=ResourcesFetcher(FilesHandler()),
             resources_modifier=ResourcesModifier(),
             analyzer=ResourcesAnalyzer(),
-            reporter=Reporter(console, reporters),
+            reporter=Reporter(console, error_console, reporters),
+            validator=Validator(),
         )
-        application.execute(app_path=app, clients=client)
+        application.execute(app, client, check)
         sys.exit(0)
     except Exception:
         logging.exception("Could not complete analysis.")
