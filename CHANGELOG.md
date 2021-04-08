@@ -2,6 +2,9 @@
 
 ## [UNRELEASED]
 
+- Specify automatic deletion of unused resources via the `--delete` flag.
+- Fixes bugs in deletion that incorrectly deleted entries in file and whole files. 
+
 # Version 0.0.9
 - Fix bug that was not considering resource names with '0' in the name.
 - Fix bug that was not considering all files of the project.

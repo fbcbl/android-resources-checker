@@ -45,7 +45,7 @@ CLIENT_PROJECT_HELP = (
     "--check",
     is_flag=True,
     default=False,
-    help="Using this flag will fail the execution if any unused resources are found"
+    help="Using this flag will fail the execution if any unused resources are found",
 )
 @click.option(
     "--report",
@@ -56,7 +56,7 @@ CLIENT_PROJECT_HELP = (
     "--delete",
     is_flag=True,
     default=False,
-    help="Using this flag will automatically delete the unused resources"
+    help="Using this flag will automatically delete the unused resources",
 )
 def launch(app, client, report, reports_dir, check, delete):
     try:

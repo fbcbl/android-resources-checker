@@ -129,12 +129,10 @@ class ResourcesModifier:
 
     def _delete_resource_entry(self, packaged_resource):
         tree = ET.parse(packaged_resource.filepath)
-        results = tree.findall(f".//*[@name=\"{packaged_resource.resource.name}\"]")
+        results = tree.findall(f'.//*[@name="{packaged_resource.resource.name}"]')
         for result in results:
             tree.getroot().remove(result)
-        tree.write(packaged_resource.filepath,
-                   encoding='utf-8',
-                   xml_declaration=True)
+        tree.write(packaged_resource.filepath, encoding="utf-8", xml_declaration=True)
 
 
 RESOURCE_NAME_REGEX = "[A-Za-z0-9_]+"
