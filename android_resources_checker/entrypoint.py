@@ -19,8 +19,6 @@ CLIENT_PROJECT_HELP = (
     " project resources"
 )
 
-REPORTS_DIR_HELP = "The directory where the csv reports will be written."
-
 
 @click.command()
 @click.option(
@@ -41,15 +39,26 @@ REPORTS_DIR_HELP = "The directory where the csv reports will be written."
     type=click.Path(resolve_path=True, exists=True, file_okay=False),
     required=False,
     default=".",
-    help=REPORTS_DIR_HELP,
+    help="The directory where the csv reports will be written.",
 )
-@click.option("--check", is_flag=True, default=False)
+@click.option(
+    "--check",
+    is_flag=True,
+    default=False,
+    help="Using this flag will fail the execution if any unused resources are found"
+)
 @click.option(
     "--report",
     type=click.Choice(["CSV", "STDOUT"], case_sensitive=False),
     required=False,
 )
-def launch(app, client, report, reports_dir, check):
+@click.option(
+    "--delete",
+    is_flag=True,
+    default=False,
+    help="Using this flag will automatically delete the unused resources"
+)
+def launch(app, client, report, reports_dir, check, delete):
     try:
         console = Console()
         error_console = Console(stderr=True, style="bold red")
@@ -69,7 +78,7 @@ def launch(app, client, report, reports_dir, check):
             reporter=Reporter(console, error_console, choice_reporters[report]),
             validator=Validator(),
         )
-        application.execute(app, client, check)
+        application.execute(app, client, check, delete)
         sys.exit(0)
     except Exception:
         logging.exception("Could not complete analysis.")
