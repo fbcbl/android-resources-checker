@@ -1,7 +1,6 @@
 import sys
 
 from rich.console import Console
-from rich.prompt import Confirm
 
 from android_resources_checker.validator import UnusedResourcesException
 
@@ -16,7 +15,7 @@ class Application(object):
         self.reporter = reporter
         self.validator = validator
 
-    def execute(self, app_path, clients, check):
+    def execute(self, app_path, clients, check, delete):
         self.reporter.apps(app_path, clients)
 
         app_name = app_path.split("/")[-1]
@@ -58,9 +57,7 @@ class Application(object):
                 self.reporter.error(f"\nUnused Resources have been found!\n{paths}")
                 sys.exit(1)
 
-        # optional resource deletion
-        delete_unused_resources = Confirm.ask("Delete unused resources?")
-        if delete_unused_resources:
+        if delete:
             resources_to_delete = set.union(*analysis.unused_resources.values())
             self.resources_modifier.delete_resources(resources_to_delete)
             self.reporter.deletion_completed(len(resources_to_delete))

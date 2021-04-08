@@ -2,6 +2,7 @@ import os
 import re
 
 from typing import Set
+import xml.etree.ElementTree as ET
 
 from .models import ResourceReference, ResourceType, PackagedResource, PackagingType
 
@@ -122,20 +123,16 @@ class ResourcesModifier:
     def delete_resources(self, resources_list):
         for packaged_resource in resources_list:
             if packaged_resource.packaging_type is PackagingType.file:
-                os.remove(packaged_resource.resource.filepath)
+                os.remove(packaged_resource.filepath)
             else:
                 self._delete_resource_entry(packaged_resource)
 
     def _delete_resource_entry(self, packaged_resource):
-        entry_regex = f'.*name="{packaged_resource.resource.name}".*'
-
-        with open(packaged_resource.filepath, "r") as infile:
-            lines = infile.readlines()
-
-            with open(packaged_resource.filepath, "w") as outfile:
-                for line in lines:
-                    if re.match(entry_regex, line) is None:
-                        outfile.write(line)
+        tree = ET.parse(packaged_resource.filepath)
+        results = tree.findall(f'.//*[@name="{packaged_resource.resource.name}"]')
+        for result in results:
+            tree.getroot().remove(result)
+        tree.write(packaged_resource.filepath, encoding="utf-8", xml_declaration=True)
 
 
 RESOURCE_NAME_REGEX = "[A-Za-z0-9_]+"

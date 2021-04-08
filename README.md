@@ -77,6 +77,10 @@ resources are found.
 
 To specify the validation use the `--check` flag (the default behavior is to perform no validation).
 
+## Automatic Deletion
+
+You can use this tool to also delete the unused resources by using the `--delete` option.
+
 ## License
 
 ```
